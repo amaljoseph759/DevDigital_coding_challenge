@@ -46,6 +46,24 @@ class ListApp extends StatelessWidget {
               },
             ),
           ),
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.blueAccent,
+                foregroundColor: Colors.white,
+                minimumSize: const Size.fromHeight(50),
+                shape: const RoundedRectangleBorder(
+                  borderRadius: BorderRadius.only(
+                    topRight: Radius.circular(0.0),
+                    topLeft: Radius.circular(0.0),
+                  ),
+                ),
+              ),
+              onPressed: () {},
+              child: const Text('Add Timer'),
+            ),
+          ),
         ],
       ),
     );
