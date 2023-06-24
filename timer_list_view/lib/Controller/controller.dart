@@ -14,14 +14,12 @@ class TimerController extends GetxController {
   final RxList<TimerItem> timers = <TimerItem>[].obs;
 
   void addTimerItem() {
-    print("timer added");
     timers.add(TimerItem());
-    print(timers);
   }
 
   void startPauseTimer(int index) {
     final timerItem = timers[index];
-    print(timerItem.isRunning.value);
+
     if (timerItem.isRunning.value) {
       timerItem.isRunning.value = false;
       timerItem.buttonText.value = 'Start';
