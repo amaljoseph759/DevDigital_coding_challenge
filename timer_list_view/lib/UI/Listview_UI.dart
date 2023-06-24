@@ -1,13 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+
+import '../Controller/controller.dart';
 
 class ListApp extends StatelessWidget {
-  const ListApp({super.key});
+  final TimerController timerController = Get.put(TimerController());
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        foregroundColor: Colors.white,
         backgroundColor: Colors.blueAccent,
         title: const Text('Timer ListView'),
       ),
@@ -15,54 +17,41 @@ class ListApp extends StatelessWidget {
         children: [
           Expanded(
             child: ListView.builder(
-              itemCount: 10,
+              itemCount: timerController.timers.length,
               itemBuilder: (context, index) {
-                return Container(
-                  margin: const EdgeInsets.all(8),
-                  decoration: BoxDecoration(
-                      border: Border.all(color: Colors.blueAccent)),
-                  child: ListTile(
-                    title: Row(
-                      children: [
-                        const Expanded(
-                          child: TextField(
-                            keyboardType: TextInputType.number,
-                            decoration: InputDecoration(
-                              labelText: 'Seconds',
-                            ),
+                final timerItem = timerController.timers[index];
+                return ListTile(
+                  title: Row(
+                    children: [
+                      Expanded(
+                        child: TextField(
+                          controller: timerItem.controller,
+                          keyboardType: TextInputType.number,
+                          decoration: const InputDecoration(
+                            labelText: 'Seconds',
                           ),
                         ),
-                        const SizedBox(width: 8.0),
-                        Text(
-                          "1000000000".toString().substring(0, 10),
-                        ),
-                        const SizedBox(width: 8.0),
-                        ElevatedButton(
-                            onPressed: () {}, child: const Text("start")),
-                      ],
-                    ),
+                      ),
+                      const SizedBox(width: 8.0),
+                      Obx(() => Text(
+                            timerItem.duration.value
+                                .toString()
+                                .substring(0, 10),
+                          )),
+                      const SizedBox(width: 8.0),
+                      ElevatedButton(
+                        onPressed: () => timerController.startPauseTimer(index),
+                        child: Obx(() => Text(timerItem.buttonText.value)),
+                      ),
+                    ],
                   ),
                 );
               },
             ),
           ),
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: ElevatedButton(
-              style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.blueAccent,
-                foregroundColor: Colors.white,
-                minimumSize: const Size.fromHeight(50),
-                shape: const RoundedRectangleBorder(
-                  borderRadius: BorderRadius.only(
-                    topRight: Radius.circular(0.0),
-                    topLeft: Radius.circular(0.0),
-                  ),
-                ),
-              ),
-              onPressed: () {},
-              child: const Text('Add Timer'),
-            ),
+          ElevatedButton(
+            onPressed: timerController.addTimerItem,
+            child: const Text('Add Timer'),
           ),
         ],
       ),
